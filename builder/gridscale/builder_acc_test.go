@@ -50,7 +50,7 @@ const testBuilderAccBasic = `
       "server_memory": 4,
       "server_cores": 2,
       "storage_capacity": 10,
-      "root_template_uuid": "4db64bfc-9fb2-4976-80b5-94ff43b1233a"
+      "base_template_uuid": "4db64bfc-9fb2-4976-80b5-94ff43b1233a"
     }
   ]
 }
