@@ -111,6 +111,10 @@ func (u *uiMock) TrackProgress(src string, currentSize, totalSize int64, stream 
 
 func produceTestConfig(raws map[string]interface{}) *Config {
 	raws["ssh_username"] = "root"
-	c, _, _ := NewConfig(raws)
+	raws["base_template_uuid"] = "test"
+	c, _, err := NewConfig(raws)
+	if err != nil {
+		panic(err)
+	}
 	return c
 }

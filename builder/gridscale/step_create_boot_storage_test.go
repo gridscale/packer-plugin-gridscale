@@ -2,6 +2,7 @@ package gridscale
 
 import (
 	"context"
+
 	"github.com/gridscale/gsclient-go/v3"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/packer"

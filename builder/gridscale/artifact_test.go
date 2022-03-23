@@ -3,9 +3,10 @@ package gridscale
 import (
 	"context"
 	"errors"
-	"github.com/gridscale/gsclient-go/v3"
 	"reflect"
 	"testing"
+
+	"github.com/gridscale/gsclient-go/v3"
 )
 
 type TemplateOperatorMock struct{}
@@ -250,7 +251,7 @@ func TestArtifact_String(t *testing.T) {
 				TemplateUUID: "test UUID",
 				Client:       nil,
 			},
-			want: "A template was created: 'test' (ID: test UUID) ",
+			want: "A template was created: 'test' (ID: test UUID)",
 		},
 	}
 	for _, tt := range tests {

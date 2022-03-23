@@ -99,7 +99,7 @@ func Test_stepLinkServerISOImage_Cleanup(t *testing.T) {
 				}},
 			},
 			success: true,
-			message: "No ISO image is requested. Skip unlink ISO image from server...",
+			message: "No ISO image is requested. Skipping unlinking server with an ISO image...",
 		},
 		{
 			name: "HTTP call fail",
