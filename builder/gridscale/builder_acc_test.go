@@ -10,7 +10,7 @@ import (
 	builderT "github.com/hashicorp/packer-plugin-sdk/acctest"
 )
 
-const templateName = "ubuntu-test-acc"
+const templateName = "ubuntu20.04-test-acc"
 
 func TestBuilderAcc_basic(t *testing.T) {
 	builderT.TestPlugin(t, &builderT.PluginTestCase{
@@ -39,19 +39,17 @@ func testAccPreCheck() error {
 }
 
 const testBuilderAccBasic = `
-{
-	"builders": [
-    {
-	  "type": "gridscale",
-      "template_name": "%s",
-      "password": "testPassword",
-      "hostname": "test-hostname",
-      "ssh_username": "root",
-      "server_memory": 4,
-      "server_cores": 2,
-      "storage_capacity": 10,
-      "base_template_uuid": "4db64bfc-9fb2-4976-80b5-94ff43b1233a"
-    }
-  ]
-}
+source "gridscale" "basic_test" {
+	base_template_uuid = "fd65f8ce-e2c6-40af-8fc3-92efa0d4eecb"
+	hostname           = "test-hostname"
+	ssh_password           = "testPassword"
+	server_cores       = 2
+	server_memory      = 4
+	ssh_username       = "root"
+	storage_capacity   = 10
+	template_name      = "%s"
+  }
+  build {
+	sources = ["source.gridscale.basic_test"]
+  }
 `
