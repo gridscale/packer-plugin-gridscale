@@ -7,7 +7,7 @@ require (
 	github.com/hashicorp/hcl/v2 v2.11.1
 	github.com/hashicorp/packer-plugin-sdk v0.2.11
 	github.com/mitchellh/go-vnc v0.0.0-20150629162542-723ed9867aed
-	github.com/mitchellh/mapstructure v1.4.1
+	github.com/mitchellh/mapstructure v1.4.3
 	github.com/zclconf/go-cty v1.10.0
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
 	golang.org/x/net v0.0.0-20210825183410-e898025ed96a
