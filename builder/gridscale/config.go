@@ -44,6 +44,7 @@ type Config struct {
 	StorageCapacity int `mapstructure:"storage_capacity" required:"true"`
 	// SecondaryStorage is set to true when the server needs a secondary storage
 	// during producing template process.
+	// **NOTE**: If `secondary_storage=true`, the template will be built from the second storage.
 	SecondaryStorage bool `mapstructure:"secondary_storage" required:"false"`
 	// A pre-built template UUID. This template is used to produce another template. E.g: Ubuntu template.
 	// **NOTE**: One of these fields has to be set: `isoimage_uuid`, `isoimage_url`, `base_template_uuid`.
