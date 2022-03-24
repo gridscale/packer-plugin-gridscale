@@ -58,5 +58,4 @@ The Scaffolding plugin is intended as a starting point for creating Packer plugi
 
 ### Builders
 
-- [builder](/docs/builders/gridscale.mdx) - The scaffolding builder is used to create endless Packer
-  plugins using a consistent plugin structure.
+- [builder](/docs/builders/gridscale.mdx) - The builder takes a template (in gridscale) or an iso-image downloaded in gridscale user space, runs any provisioning necessary on the template/iso-image after launching it, then snapshots it into a reusable template. This reusable template can then be used as the foundation of new servers that are launched within gridscale.
