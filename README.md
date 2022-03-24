@@ -1,90 +1,70 @@
-# Packer Plugin Scaffolding
+# Packer Plugin Gridscale
 
-This repository is a template for a Packer multi-component plugin. It is intended as a starting point for creating Packer plugins, containing:
-- A builder ([builder/scaffolding](builder/scaffolding))
-- A provisioner ([provisioner/scaffolding](provisioner/scaffolding))
-- A post-processor ([post-processor/scaffolding](post-processor/scaffolding))
-- A data source ([datasource/scaffolding](datasource/scaffolding))
-- Docs ([docs](docs))
-- A working example ([example](example))
+[![Automatic Releaser](https://github.com/gridscale/packer-plugin-gridscale/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/gridscale/packer-plugin-gridscale/actions/workflows/release.yml)
+[![GoDoc](https://godoc.org/github.com/gridscale/packer-plugin-gridscale?status.svg)](https://godoc.org/github.com/gridscale/packer-plugin-gridscale)
+[![GitHub latest release](https://img.shields.io/github/release/gridscale/packer-plugin-gridscale.svg)](https://github.com/gridscale/packer-plugin-gridscale/releases)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gridscale/packer-plugin-gridscale)](https://goreportcard.com/report/github.com/gridscale/packer-plugin-gridscale)
 
-These folders contain boilerplate code that you will need to edit to create your own Packer multi-component plugin.
-A full guide to creating Packer plugins can be found at [Extending Packer](https://www.packer.io/docs/plugins/creation).
+The [gridscale](https://www.gridscale.io/) packer plugin can be used with HashiCorp [Packer](https://www.packer.io)
+to create custom templates in [gridscale](https://www.gridscale.io/). Docs: [docs](docs).
 
-In this repository you will also find a pre-defined GitHub Action configuration for the release workflow
-(`.goreleaser.yml` and `.github/workflows/release.yml`). The release workflow configuration makes sure the GitHub
-release artifacts are created with the correct binaries and naming conventions.
+## Maintainers
 
-Please see the [GitHub template repository documentation](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template)
-for how to create a new repository from this template on GitHub.
+This provider plugin is maintained by the Packer team at [gridscale](https://www.gridscale.io/).
 
-## Packer plugin projects
+## Requirements
 
-Here's a non exaustive list of Packer plugins that you can checkout:
+- [Packer](https://www.packer.io/intro/getting-started/install.html) ≥ v1.7.0
+- [Go](https://golang.org/doc/install) ≥ 1.17 (to build the provider plugin)
 
-* [github.com/hashicorp/packer-plugin-docker](https://github.com/hashicorp/packer-plugin-docker)
-* [github.com/exoscale/packer-plugin-exoscale](https://github.com/exoscale/packer-plugin-exoscale)
-* [github.com/sylviamoss/packer-plugin-comment](https://github.com/sylviamoss/packer-plugin-comment)
-* [github.com/hashicorp/packer-plugin-hashicups](https://github.com/hashicorp/packer-plugin-hashicups)
+## Installation
 
-Looking at their code will give you good examples.
+### Automatic installation:
+Packer (≥ v1.7.0) supports a new `packer init` command allowing
+automatic installation of Packer plugins. [`Plugin installation`](https://www.packer.io/docs/plugins#installing-plugins).
+
+To install this plugin, copy and paste this code into your Packer configuration .
+Then, run [`packer init`](https://www.packer.io/docs/commands/init).
+
+```hcl
+packer {
+  required_plugins {
+    gridscale = {
+      version = ">= 0.0.1"
+      source  = "github.com/gridscale/gridscale"
+    }
+  }
+}
+```
+
+#### Manual installation
+[`Plugin installation`](https://www.packer.io/docs/plugins#installing-plugins)
+
+## Building/Developing the Provider
+
+Build:
+
+    $ git clone git@github.com:gridscale/packer-plugin-gridscale.git
+    $ cd packer-plugin-gridscale
+    $ make build
+
+For dev:
+
+    $ make dev
+
 
 ## Running Acceptance Tests
+Requirements:
+- Environment varialbe `GRIDSCALE_UUID` has to be set.
+- Environment varialbe `GRIDSCALE_TOKEN` has to be set.
 
-Make sure to install the plugin with `go build .` and to have Packer installed locally.
-Then source the built binary to the plugin path with `cp packer-plugin-scaffolding ~/.packer.d/plugins/packer-plugin-scaffolding`
-Once everything needed is set up, run:
+In `packer-plugin-gridscale` directory, run:
 ```
-PACKER_ACC=1 go test -count 1 -v ./... -timeout=120m
-```
-
-This will run the acceptance tests for all plugins in this set.
-
-## Test Plugin Example Action
-
-This scaffolding configures a [manually triggered plugin test action](/.github/workflows/test-plugin-example.yml).
-By default, the action will run Packer at the latest version to init, validate, and build the example configuration
-within the [example](example) folder. This is useful to quickly test a basic template of your plugin against Packer.
-
-The example must contain the `required_plugins` block and require your plugin at the latest or any other released version.
-This will help test and validate plugin releases.
-
-## Registering Documentation on Packer.io
-
-Documentation for a plugin is maintained within the `docs` directory and served on GitHub.
-To include plugin docs on Packer.io a global pre-hook has been added to the main scaffolding .goreleaser.yml file, that if uncommented will generate and include a docs.zip file as part of the plugin release.
-
-The `docs.zip` file will contain all of the `.mdx` files under the plugins root `docs/` directory that can be consumed remotely by Packer.io.
-
-Once the first `docs.zip` file has been included into a release you will need to open a one time pull-request against [hashicorp/packer](https://github.com/hashicorp/packer) to register the plugin docs.
-This is done by adding the block below for the respective plugin to the file [website/data/docs-remote-navigation.js](https://github.com/hashicorp/packer/blob/master/website/data/docs-remote-plugins.json).
-
-```json
-{
-   "title": "Scaffolding",
-   "path": "scaffolding",
-   "repo": "hashicorp/packer-plugin-scaffolding",
-   "version": "latest",
-   "sourceBranch": "main"
- }
+make acctest
 ```
 
-If a plugin maintainer wishes to only include a specific version of released docs then the `"version"` key in the above configuration should be set to a released version of the plugin. Otherwise it should be set to `"latest"`.
+This will run the acceptance test for `packer-plugin-gridscale`.
 
-The `"sourceBranch"` key in the above configuration ensures potential contributors can link back to source files in the plugin repository from the Packer docs site. If a `"sourceBranch"` value is not present, it will default to `"main"`.
+## Examples:
 
-The documentation structure needed for Packer.io can be generated manually, by creating a simple zip file called `docs.zip` of the docs directory and included in the plugin release.
-
-```/bin/bash
-[[ -d docs/ ]] && zip -r docs.zip docs/
-```
-
-Once the first `docs.zip` file has been included into a release you will need to open a one time pull-request against [hashicorp/packer](https://github.com/hashicorp/packer) to register the plugin docs.
-
-# Requirements
-
--	[packer-plugin-sdk](https://github.com/hashicorp/packer-plugin-sdk) >= v0.2.9
--	[Go](https://golang.org/doc/install) >= 1.17
-
-## Packer Compatibility
-This scaffolding template is compatible with Packer >= v1.7.0
+## Releasing the Provider:
