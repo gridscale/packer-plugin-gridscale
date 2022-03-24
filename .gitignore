@@ -1,4 +1,4 @@
 main
 dist/*
-packer-plugin-scaffolding
+packer-plugin-gridscale
 .docs/*
