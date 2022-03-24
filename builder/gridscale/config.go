@@ -1,4 +1,5 @@
-//go:generate mapstructure-to-hcl2 -type Config
+//go:generate packer-sdc struct-markdown
+//go:generate packer-sdc mapstructure-to-hcl2 -type Config
 
 package gridscale
 
@@ -21,11 +22,11 @@ import (
 type Config struct {
 	common.PackerConfig `mapstructure:",squash"`
 	Comm                communicator.Config `mapstructure:",squash"`
-	// The client TOKEN to use to access your account.
+	// The client TOKEN to use to access your account. Environment variable `GRIDSCALE_TOKEN` can be set instead.
 	APIToken string `mapstructure:"api_token" required:"true"`
-	// The client KEY to use to access your account.
+	// The client KEY to use to access your account. Environment variable `GRIDSCALE_UUID` can be set instead.
 	APIKey string `mapstructure:"api_key" required:"true"`
-	// The server URL to use to access your account. Default: "https://api.gridscale.io"
+	// The server URL to use to access your account. Default: "https://api.gridscale.io". Environment variable `GRIDSCALE_URL` can be set instead.
 	APIURL string `mapstructure:"api_url" required:"false"`
 	// APIRequestHeaders is for debug purpose only. Format: "key1:val1,key2:val2"
 	APIRequestHeaders string `mapstructure:"api_request_headers" required:"false"`
@@ -45,10 +46,13 @@ type Config struct {
 	// during producing template process.
 	SecondaryStorage bool `mapstructure:"secondary_storage" required:"false"`
 	// A pre-built template UUID. This template is used to produce another template. E.g: Ubuntu template.
+	// **NOTE**: One of these fields has to be set: `isoimage_uuid`, `isoimage_url`, `base_template_uuid`.
 	BaseTemplateUUID string `mapstructure:"base_template_uuid" required:"false"`
 	// A pre-built ISO image is used by the given ISO image UUID. If IsoImageUUID is set, IsoImageURL is ignored.
+	// **NOTE**: One of these fields has to be set: `isoimage_uuid`, `isoimage_url`, `base_template_uuid`.
 	IsoImageUUID string `mapstructure:"isoimage_uuid" required:"false"`
 	// An URL is used to download the image. If IsoImageUUID is set, IsoImageURL is ignored.
+	// **NOTE**: One of these fields has to be set: `isoimage_uuid`, `isoimage_url`, `base_template_uuid`.
 	IsoImageURL string `mapstructure:"isoimage_url" required:"false"`
 	// This is an array of commands to type when the server instance is first
 	// booted. The goal of these commands should be to type just enough to
@@ -65,7 +69,9 @@ type Config struct {
 	BootWait time.Duration `mapstructure:"boot_wait" required:"false"`
 	// Time in ms to wait between each key press
 	BootKeyInterval time.Duration `mapstructure:"boot_key_interval" required:"false"`
-	// A list of files' relative paths that need to be served on a HTTP server
+	// A list of files' relative paths that need to be served on a HTTP server.
+	// Put this address ({{__HTTP__ADDRESS__}} is a placeholder, do not edit) http://{{__HTTP__ADDRESS__}}/path/to/file
+	// to `boot_command` to use http-served files in boot commands.
 	Files []string `mapstructure:"files" required:"false"`
 	ctx   interpolate.Context
 }
