@@ -242,7 +242,7 @@ func uploadFilesToServer(sshCfg *easyssh.MakeConfig, ui packer.Ui, files []strin
 						ui.Say(fmt.Sprintf("Failed to uploaded file \"%s\"!", path))
 						return err
 					}
-					ui.Say(fmt.Sprintf("Uploaded file \"%s\" succesfully", path))
+					ui.Say(fmt.Sprintf("Uploaded file \"%s\" successfully", path))
 				}
 				return nil
 			})
@@ -259,7 +259,7 @@ func uploadFilesToServer(sshCfg *easyssh.MakeConfig, ui packer.Ui, files []strin
 			ui.Say(fmt.Sprintf("Failed to uploaded file \"%s\"!", relPath))
 			return err
 		}
-		ui.Say(fmt.Sprintf("Uploaded file \"%s\" succesfully", relPath))
+		ui.Say(fmt.Sprintf("Uploaded file \"%s\" successfully", relPath))
 	}
 	return nil
 }
