@@ -42,7 +42,7 @@ const testBuilderAccBasic = `
 source "gridscale" "basic_test" {
 	base_template_uuid = "fd65f8ce-e2c6-40af-8fc3-92efa0d4eecb"
 	hostname           = "test-hostname"
-	ssh_password           = "testPassword"
+	ssh_password       = "testPassword"
 	server_cores       = 2
 	server_memory      = 4
 	ssh_username       = "root"
