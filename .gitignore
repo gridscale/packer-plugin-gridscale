@@ -2,3 +2,5 @@ main
 dist/*
 packer-plugin-gridscale
 .docs/*
+docs-partials/*
+docs.zip
