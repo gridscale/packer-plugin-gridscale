@@ -18,7 +18,7 @@ import (
 const (
 	ubuntuTemplateName            = "Ubuntu 20.04 LTS (Focal Fossa)"
 	fileServerPlainPassword       = "file-server-gridscale"
-	fileServerAddressPlaceholder  = "__HTTP__ADDRESS__"
+	fileServerAddressPlaceholder  = "{{__HTTP__ADDRESS__}}"
 	initialBootTimeFileServerSecs = 30
 )
 
