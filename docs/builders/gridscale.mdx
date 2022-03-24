@@ -1,63 +1,109 @@
 ---
 description: >
-  The scaffolding builder is used to create endless Packer plugins using
-  a consistent plugin structure.
-page_title: Scaffolding - Builders
-nav_title: Scaffolding
+  The gridscale Packer builder is used to create new (os) templates for use with gridscale. The builder takes a template (in gridscale) or an iso-image, runs any provisioning necessary on the template/iso-image after launching it, then snapshots it into a reusable template. This reusable template can then be used as the foundation of new servers that are provisioned within gridscale user space.
+page_title: gridscale - Builders
 ---
 
-# Scaffolding
+# gridscale Builder
 
-Type: `scaffolding`
+Type: `gridscale`
+Artifact BuilderId: `packer.gridscale`
 
-<!--
-  Include a short description about the builder. This is a good place
-  to call out what the builder does, and any requirements for the given
-  builder environment. See https://www.packer.io/docs/builders/null
--->
+The `gridscale` Packer builder is used to create new (os) templates for use with gridscale [gridscale](https://www.gridscale.io/). The builder takes a template (in gridscale) or an iso-image, runs any provisioning necessary on the template/iso-image after launching it, then snapshots it into a reusable template. This reusable template can then be used as the foundation of new servers that are provisioned within gridscale user space.
 
-The scaffolding builder is used to create endless Packer plugins using
-a consistent plugin structure.
+The builder does _not_ manage templates. Once it creates a template, it is up to you
+to use it or delete it.
 
+### Installation
 
-<!-- Builder Configuration Fields -->
+To install this plugin using Packer v1.7.0 or later, copy and paste this code
+into your Packer configuration.
 
-### Required
-
-- `mock` (string) - The name of the mock to use for the Scaffolding API.
-
-
-<!--
-  Optional Configuration Fields
-
-  Configuration options that are not required or have reasonable defaults
-  should be listed under the optionals section. Defaults values should be
-  noted in the description of the field
--->
-
-### Optional
-
-- `mock_api_url` (string) - The Scaffolding API endpoint to connect to.
-  Defaults to https://example.com
-
-
-
-<!--
-  A basic example on the usage of the builder. Multiple examples
-  can be provided to highlight various build configurations.
-
--->
-### Example Usage
+Then, run [`packer init`](https://www.packer.io/docs/commands/init).
 
 
 ```hcl
- source "scaffolding" "example" {
-   mock = "bird"
- }
-
- build {
-   sources = ["source.scaffolding.example"]
- }
+packer {
+  required_plugins {
+    gridscale = {
+      version = ">= 1.0.0"
+      source  = "github.com/hashicorp/gridscale"
+    }
+  }
+}
 ```
 
+## Configuration Reference
 
+There are many configuration options available for the builder. They are
+segmented below into two categories: required and optional parameters. Within
+each category, the available configuration keys are alphabetized.
+
+### Required:
+
+@include 'builder/gridscale/Config-required.mdx'
+
+### Optional:
+
+@include 'builder/gridscale/Config-not-required.mdx'
+
+## Basic Example
+
+Here is a basic example. It is completely valid as soon as you enter your own
+access tokens:
+
+<Tabs>
+<Tab heading="HCL2">
+
+```hcl
+source "gridscale" "example" {
+	base_template_uuid = "fd65f8ce-e2c6-40af-8fc3-92efa0d4eecb"
+	hostname           = "test-hostname"
+	ssh_password       = "testPassword"
+	ssh_username       = "root"
+	server_cores       = 2
+	server_memory      = 4
+	storage_capacity   = 10
+	template_name      = "my-ubuntu20.04-template"
+}
+
+build {
+	sources = ["source.gridscale.example"]
+}
+```
+
+</Tab>
+<Tab heading="JSON">
+
+```json
+{
+	"builders": [
+		{
+			"type": "gridscale",
+			"template_name": "my-ubuntu20.04-template",
+			"password": "testPassword",
+			"hostname": "test-hostname",
+			"ssh_username": "root",
+			"server_memory": 4,
+			"server_cores": 2,
+			"storage_capacity": 10,
+			"base_template_uuid": "fd65f8ce-e2c6-40af-8fc3-92efa0d4eecb"
+		}
+	]
+}
+
+```
+
+</Tab>
+</Tabs>
+
+### Communicator Config
+
+In addition to the builder options, a
+[communicator](/docs/templates/legacy_json_templates/communicator) can be configured for this builder.
+
+@include 'packer-plugin-sdk/communicator/Config-not-required.mdx'
+
+@include 'packer-plugin-sdk/communicator/SSH-not-required.mdx'
+
+@include 'packer-plugin-sdk/communicator/SSH-Private-Key-File-not-required.mdx'
