@@ -48,8 +48,9 @@ source "gridscale" "basic_test" {
 	ssh_username       = "root"
 	storage_capacity   = 10
 	template_name      = "%s"
-  }
-  build {
+}
+
+build {
 	sources = ["source.gridscale.basic_test"]
-  }
+}
 `
