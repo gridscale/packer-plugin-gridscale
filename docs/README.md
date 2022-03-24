@@ -1,4 +1,4 @@
-# Scaffolding Plugins
+# gridscale Packer Plugin
 
 <!--
   Include a short overview about the plugin.
@@ -54,7 +54,7 @@ on [installing a plugin](https://www.packer.io/docs/extending/plugins/#installin
 
 ## Plugin Contents
 
-The Scaffolding plugin is intended as a starting point for creating Packer plugins, containing:
+The gridscale Packer plugin is intended as a starting point for creating Packer plugins, containing:
 
 ### Builders
 
