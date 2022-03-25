@@ -68,3 +68,6 @@ This will run the acceptance test for `packer-plugin-gridscale`.
 ## Examples:
 
 ## Releasing the Provider:
+- Update version in `version/version.go`
+- Do `make generate` to regenerate docs and go file `config.hcl2spec.go` (if there are updates in `config.go`).
+- Add entries to `CHANGELOG.md`
