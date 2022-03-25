@@ -20,7 +20,7 @@ func (s *stepCreateSecondaryStorage) Run(ctx context.Context, state multistep.St
 	c := s.config
 	ui := s.ui
 	// Create a secondary storage
-	if c.SecondaryStorage == true {
+	if c.SecondaryStorage {
 		client := s.client
 		ui.Say("Creating a secondary storage...")
 		storage, err := client.CreateStorage(
@@ -50,7 +50,7 @@ func (s *stepCreateSecondaryStorage) Cleanup(state multistep.StateBag) {
 	client := s.client
 	ui := s.ui
 	c := s.config
-	if c.SecondaryStorage == true {
+	if c.SecondaryStorage {
 		// Destroy the created secondary storage
 		secondaryStorageUUID, ok := state.Get("secondary_storage_uuid").(string)
 		if !ok {
