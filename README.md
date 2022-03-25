@@ -1,6 +1,6 @@
 # Packer Plugin Gridscale
 
-[![Automatic Releaser](https://github.com/gridscale/packer-plugin-gridscale/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/gridscale/packer-plugin-gridscale/actions/workflows/release.yml)
+[![Automatic Releaser](https://github.com/gridscale/packer-plugin-gridscale/actions/workflows/release.yml/badge.svg)](https://github.com/gridscale/packer-plugin-gridscale/actions/workflows/release.yml)
 [![GoDoc](https://godoc.org/github.com/gridscale/packer-plugin-gridscale?status.svg)](https://godoc.org/github.com/gridscale/packer-plugin-gridscale)
 [![GitHub latest release](https://img.shields.io/github/release/gridscale/packer-plugin-gridscale.svg)](https://github.com/gridscale/packer-plugin-gridscale/releases)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gridscale/packer-plugin-gridscale)](https://goreportcard.com/report/github.com/gridscale/packer-plugin-gridscale)
