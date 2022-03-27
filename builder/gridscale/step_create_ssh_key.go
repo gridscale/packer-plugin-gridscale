@@ -37,6 +37,12 @@ func (s *stepCreateSSHKey) Run(ctx context.Context, state multistep.StateBag) mu
 	}
 	ui.Say("Creating temporary ssh key for server...")
 	priv, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		err := fmt.Errorf("Error generating SSH key: %s", err)
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
+	}
 	priv_der := x509.MarshalPKCS1PrivateKey(priv)
 	priv_blk := pem.Block{
 		Type:    "RSA PRIVATE KEY",
