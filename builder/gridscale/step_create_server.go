@@ -4,8 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/gridscale/gsclient-go/v3"
 	"log"
+
+	"github.com/gridscale/gsclient-go/v3"
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
@@ -67,7 +68,7 @@ func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
 			"Error shutdown server: %s", err))
 		return
 	}
-	ui.Say(fmt.Sprintf("Shutted down the server (%s)", serverUUID))
+	ui.Say(fmt.Sprintf("Shutdown down the server (%s) successfully", serverUUID))
 	// Remove the server
 	ui.Say(fmt.Sprintf("Destroying the server (%s)...", serverUUID))
 	err = client.DeleteServer(context.Background(), serverUUID)
