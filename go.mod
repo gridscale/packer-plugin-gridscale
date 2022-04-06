@@ -3,7 +3,7 @@ module github.com/gridscale/packer-plugin-gridscale
 go 1.17
 
 require (
-	github.com/gridscale/gsclient-go/v3 v3.8.1
+	github.com/gridscale/gsclient-go/v3 v3.9.1
 	github.com/hashicorp/hcl/v2 v2.11.1
 	github.com/hashicorp/packer-plugin-sdk v0.2.11
 	github.com/mitchellh/go-vnc v0.0.0-20150629162542-723ed9867aed
