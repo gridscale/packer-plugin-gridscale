@@ -153,6 +153,10 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			SSHConfig: b.config.Comm.SSHConfigFunc(),
 		},
 		&commonsteps.StepProvision{},
+		&stepShutdownServer{
+			client: client,
+			ui:     ui,
+		},
 		&stepCreateSnapshot{
 			client: client,
 			config: &b.config,
