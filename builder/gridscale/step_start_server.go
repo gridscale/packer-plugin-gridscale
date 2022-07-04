@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/gridscale/gsclient-go/v3"
@@ -70,7 +71,10 @@ func (s *stepStartServer) Cleanup(state multistep.StateBag) {
 	//set the shutdown timeout specifically
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), serverShutdownTimeoutSecs*time.Second)
 	defer cancel()
-	err := client.ShutdownServer(shutdownCtx, serverUUID)
+	err := suppressHTTPErrorCodes(
+		client.ShutdownServer(shutdownCtx, serverUUID),
+		http.StatusBadRequest,
+	)
 	if err != nil && err != shutdownCtx.Err() {
 		err := fmt.Errorf("Error shutting down server: %s", err)
 		state.Put("error", err)
@@ -80,7 +84,10 @@ func (s *stepStartServer) Cleanup(state multistep.StateBag) {
 	// if the server cannot be shutdown gracefully, try to turn it off
 	if err != nil && err == shutdownCtx.Err() {
 		ui.Say(fmt.Sprintf("Could not gracefully shutdown server (%s). Trying to turn it off instead...", serverUUID))
-		err := client.StopServer(context.Background(), serverUUID)
+		err := suppressHTTPErrorCodes(
+			client.StopServer(context.Background(), serverUUID),
+			http.StatusBadRequest,
+		)
 		if err != nil {
 			state.Put("error", err)
 			ui.Error(fmt.Sprintf(

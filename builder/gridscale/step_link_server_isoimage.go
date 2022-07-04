@@ -113,7 +113,7 @@ func (s *stepLinkServerISOImage) Cleanup(state multistep.StateBag) {
 		return
 	}
 	ui.Say(fmt.Sprintf("Unlinking the server (%s) and the ISO image (%s)...", serverUUID, isoImageUUID))
-	err := removeErrorContainsHTTPCodes(
+	err := suppressHTTPErrorCodes(
 		client.UnlinkIsoImage(context.Background(), serverUUID, isoImageUUID),
 		http.StatusConflict,
 		http.StatusNotFound,

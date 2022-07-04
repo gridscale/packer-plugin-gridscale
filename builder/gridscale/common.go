@@ -1,9 +1,10 @@
 package gridscale
 
 import (
-	"github.com/gridscale/gsclient-go/v3"
 	"math/rand"
 	"strings"
+
+	"github.com/gridscale/gsclient-go/v3"
 )
 
 const CharSetAlphaNum = "abcdefghijklmnopqrstuvwxyz012346789"
@@ -35,9 +36,9 @@ func convertStrToHeaderMap(str string) map[string]string {
 	return result
 }
 
-// removeErrorContainsHTTPCodes returns nil, if the error of HTTP error
-//has status code that is in the given list of http status codes
-func removeErrorContainsHTTPCodes(err error, errorCodes ...int) error {
+// suppressHTTPErrorCodes suppresses the error, if the error
+// is in the list errorCodes.
+func suppressHTTPErrorCodes(err error, errorCodes ...int) error {
 	if requestError, ok := err.(gsclient.RequestError); ok {
 		if containsInt(errorCodes, requestError.StatusCode) {
 			err = nil
