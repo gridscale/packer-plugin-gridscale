@@ -9,7 +9,7 @@ page_title: gridscale - Builders
 Type: `gridscale`
 Artifact BuilderId: `packer.gridscale`
 
-The `gridscale` Packer builder is used to create new (os) templates for use with gridscale [gridscale](https://www.gridscale.io/). The builder takes a template (in gridscale) or an iso-image, runs any provisioning necessary on the template/iso-image after launching it, then snapshots it into a reusable template. This reusable template can then be used as the foundation of new servers that are provisioned within gridscale user space.
+The `gridscale` Packer builder is used to create new (os) templates for use with [gridscale](https://www.gridscale.io/). The builder takes a template (in gridscale) or an iso-image, runs any provisioning necessary on the template/iso-image after launching it, then snapshots it into a reusable template. This reusable template can then be used as the foundation of new servers that are provisioned within gridscale user space.
 
 The builder does _not_ manage templates. Once it creates a template, it is up to you
 to use it or delete it.
