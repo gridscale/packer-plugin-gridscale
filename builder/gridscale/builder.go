@@ -189,6 +189,8 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 	artifact := &Artifact{
 		TemplateName: b.config.TemplateName,
 		TemplateUUID: state.Get("template_uuid").(string),
+		LocationName: state.Get("location_name").(string),
+		LocationUUID: state.Get("location_uuid").(string),
 		Client:       client,
 	}
 

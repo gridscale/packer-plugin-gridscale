@@ -37,7 +37,7 @@ func (s *stepCreateTemplate) Run(ctx context.Context, state multistep.StateBag) 
 		return multistep.ActionHalt
 	}
 	ui.Say(fmt.Sprintf("Creating template: %v", c.TemplateName))
-	template, err := client.CreateTemplate(
+	templateRes, err := client.CreateTemplate(
 		context.Background(),
 		gsclient.TemplateCreateRequest{
 			Name:         c.TemplateName,
@@ -50,8 +50,20 @@ func (s *stepCreateTemplate) Run(ctx context.Context, state multistep.StateBag) 
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
-	state.Put("template_uuid", template.ObjectUUID)
-	ui.Say(fmt.Sprintf("Created template %v with uuid: %v", c.TemplateName, template.ObjectUUID))
+	template, err := client.GetTemplate(
+		context.Background(),
+		templateRes.ObjectUUID,
+	)
+	if err != nil {
+		err := fmt.Errorf("Error getting template: %s", err)
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
+	}
+	state.Put("template_uuid", template.Properties.ObjectUUID)
+	state.Put("location_name", template.Properties.LocationName)
+	state.Put("location_uuid", template.Properties.LocationUUID)
+	ui.Say(fmt.Sprintf("Created template %v with uuid: %v", c.TemplateName, template.Properties.ObjectUUID))
 	return multistep.ActionContinue
 }
 
