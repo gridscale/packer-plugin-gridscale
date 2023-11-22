@@ -6,25 +6,6 @@ The `gridscale` Packer builder is used to create new (os) templates for use with
 The builder does _not_ manage templates. Once it creates a template, it is up to you
 to use it or delete it.
 
-## Installation
-
-To install this plugin using Packer v1.7.0 or later, copy and paste this code
-into your Packer configuration.
-
-Then, run [`packer init`](https://www.packer.io/docs/commands/init).
-
-
-```hcl
-packer {
-  required_plugins {
-    gridscale = {
-      version = ">= 0.0.1"
-      source  = "github.com/gridscale/gridscale"
-    }
-  }
-}
-```
-
 ## Configuration Reference
 
 There are many configuration options available for the builder. They are
