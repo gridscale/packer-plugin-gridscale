@@ -3,7 +3,7 @@
 integration {
   name = "Gridscale"
   description = "TODO"
-  identifier = "packer/BrandonRomano/gridscale"
+  identifier = "packer/gridscale/gridscale"
   component {
     type = "builder"
     name = "gridscale"
