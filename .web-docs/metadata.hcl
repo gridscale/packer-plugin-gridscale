@@ -2,7 +2,7 @@
 # https://github.com/hashicorp/integration-template#metadata-configuration
 integration {
   name = "Gridscale"
-  description = "TODO"
+  description = "Create new (os) templates for use with gridscale."
   identifier = "packer/gridscale/gridscale"
   component {
     type = "builder"
