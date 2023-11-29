@@ -26,4 +26,4 @@ $ packer plugins install github.com/gridscale/gridscale
 
 #### Builders
 
-- [gridscale](/packer/integrations/gridscale/latest/components/builder/gridscale) - The builder takes a template (in gridscale) or an iso-image, runs any provisioning necessary on the template/iso-image after launching it, then snapshots it into a reusable template. This reusable template can then be used as the foundation of new servers that are provisioned within gridscale user space.
+- [gridscale](/packer/integrations/gridscale/gridscale/latest/components/builder/gridscale) - The builder takes a template (in gridscale) or an iso-image, runs any provisioning necessary on the template/iso-image after launching it, then snapshots it into a reusable template. This reusable template can then be used as the foundation of new servers that are provisioned within gridscale user space.
