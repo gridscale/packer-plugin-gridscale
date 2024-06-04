@@ -8,7 +8,7 @@ To install this plugin, copy and paste this code into your Packer configuration,
 packer {
   required_plugins {
     gridscale = {
-      version = "= 0.0.2"
+      version = "= 1.0.0"
       source  = "github.com/gridscale/gridscale"
     }
   }
