@@ -1,5 +1,53 @@
 # Changelog
 
+## 3.14.2 (May 17, 2024)
+
+BUG FIXES:
+- Fix typo in usage operator interface [#232](https://github.com/gridscale/gsclient-go/pull/232).
+- Add missing location attributes on server [#233](https://github.com/gridscale/gsclient-go/pull/233).
+- Fix unhandled error when preparing HTTP request [#235](https://github.com/gridscale/gsclient-go/pull/235).
+
+## 3.14.1 (Feb 15, 2024)
+
+IMPROVEMENTS:
+- Upgrade dependencies to fix some security vulnerabilities.
+
+## 3.14.0 (Sept 25, 2023)
+
+FEATURES:
+- Add network PUT update operation [#228](https://github.com/gridscale/gsclient-go/pull/228).
+
+## 3.13.0 (Jul 4, 2023)
+
+FEATURES:
+- Support proxy protocol for loadbalancer backends [#227](https://github.com/gridscale/gsclient-go/pull/227)
+
+## 3.12.1 (May 19, 2023)
+
+BUG FIXES:
+- (Hot fix) Add missing `comment` and `user_uuid` fields to object storage access key create/update operations [#226](https://github.com/gridscale/gsclient-go/pull/226).
+
+## 3.12.0 (May 09, 2023)
+
+FEATURES:
+- Allow to set `user-data` in server create/update operations [#225](https://github.com/gridscale/gsclient-go/pull/225).
+
+## 3.11.1 (Jan 04, 2023)
+
+BUG FIXES:
+
+* (Hot fix) Omit `HardwareProfileConfig` when it is not set during server creation/update.
+
+## 3.11.0 (Dec 21, 2022)
+
+IMPROVEMENTS:
+- Allow to custom hardware profile configuration [#223](https://github.com/gridscale/gsclient-go/pull/223)
+
+## 3.10.1 (Oct 25, 2022)
+
+IMPROVEMENTS:
+- Add retry when API backend returns error code 409 [#222](https://github.com/gridscale/gsclient-go/pull/222)
+
 ## 3.10.0 (Apr 28, 2022)
 
 IMPROVEMENTS:

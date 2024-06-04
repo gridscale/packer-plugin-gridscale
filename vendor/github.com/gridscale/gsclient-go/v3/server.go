@@ -57,13 +57,27 @@ type ServerProperties struct {
 	Cores int `json:"cores"`
 
 	// Specifies the hardware settings for the virtual machine.
+	// Note: hardware_profile and hardware_profile_config parameters can't be used at the same time.
 	HardwareProfile string `json:"hardware_profile"`
+
+	// Specifies the custom hardware settings for the virtual machine.
+	// Note: hardware_profile and hardware_profile_config parameters can't be used at the same time.
+	HardwareProfileConfig ServerHardwareProfileConfig `json:"hardware_profile_config"`
 
 	// Status indicates the status of the object. it could be in-provisioning or active
 	Status string `json:"status"`
 
 	// Helps to identify which data center an object belongs to.
 	LocationUUID string `json:"location_uuid"`
+
+	// The human-readable name of the location. It supports the full UTF-8 character set, with a maximum of 64 characters.
+	LocationCountry string `json:"location_country"`
+
+	// Uses IATA airport code, which works as a location identifier.
+	LocationIata string `json:"location_iata"`
+
+	// The human-readable name of the location. It supports the full UTF-8 character set, with a maximum of 64 characters.
+	LocationName string `json:"location_name"`
 
 	// The power status of the server.
 	Power bool `json:"power"`
@@ -103,6 +117,9 @@ type ServerProperties struct {
 
 	// Defines the date and time of the last object change.
 	ChangeTime GSTime `json:"change_time"`
+
+	// For system configuration on first boot. May contain cloud-config data or shell scripting, encoded as base64 string. Supported tools are cloud-init, Cloudbase-init, and Ignition.
+	UserData string `json:"user_data"`
 }
 
 // ServerRelations holds a list of server relations.
@@ -135,7 +152,12 @@ type ServerCreateRequest struct {
 	// Specifies the hardware settings for the virtual machine.
 	// Allowed values: DefaultServerHardware, NestedServerHardware, LegacyServerHardware, CiscoCSRServerHardware,
 	// SophosUTMServerHardware, F5BigipServerHardware, Q35ServerHardware, Q35NestedServerHardware.
+	// Note: hardware_profile and hardware_profile_config parameters can't be used at the same time.
 	HardwareProfile ServerHardwareProfile `json:"hardware_profile,omitempty"`
+
+	// Specifies the custom hardware settings for the virtual machine.
+	// Note: hardware_profile and hardware_profile_config parameters can't be used at the same time.
+	HardwareProfileConfig *ServerHardwareProfileConfig `json:"hardware_profile_config,omitempty"`
 
 	// Defines which Availability-Zone the Server is placed. Can be empty.
 	AvailablityZone string `json:"availability_zone,omitempty"`
@@ -152,6 +174,9 @@ type ServerCreateRequest struct {
 	// The information about other object which are related to this server. the object could be ip, storage, network, and isoimage.
 	// **Caution**: This field is deprecated.
 	Relations *ServerCreateRequestRelations `json:"relations,omitempty"`
+
+	// For system configuration on first boot. May contain cloud-config data or shell scripting, encoded as base64 string. Supported tools are cloud-init, Cloudbase-init, and Ignition.
+	UserData *string `json:"user_data,omitempty"`
 }
 
 // ServerCreateRequestRelations holds a list of a server's relations.
@@ -250,7 +275,15 @@ type ServerUpdateRequest struct {
 	AutoRecovery *bool `json:"auto_recovery,omitempty"`
 
 	// Specifies the hardware settings for the virtual machine.
+	// Note: hardware_profile and hardware_profile_config parameters can't be used at the same time.
 	HardwareProfile ServerHardwareProfile `json:"hardware_profile,omitempty"`
+
+	// Specifies the custom hardware settings for the virtual machine.
+	// Note: hardware_profile and hardware_profile_config parameters can't be used at the same time.
+	HardwareProfileConfig *ServerHardwareProfileConfig `json:"hardware_profile_config,omitempty"`
+
+	// For system configuration on first boot. May contain cloud-config data or shell scripting, encoded as base64 string. Supported tools are cloud-init, Cloudbase-init, and Ignition.
+	UserData *string `json:"user_data,omitempty"`
 }
 
 // ServerMetricList holds a list of a server's metrics.
@@ -308,6 +341,54 @@ const (
 	F5BigipServerHardware   ServerHardwareProfile = "f5_bigip"
 	Q35ServerHardware       ServerHardwareProfile = "q35"
 )
+
+type Machinetype string
+
+// All available machinetypes.
+const (
+	I440fxMachineType  Machinetype = "i440fx"
+	Q35BiosMachineType Machinetype = "q35_bios"
+	Q35Uefi            Machinetype = "q35_uefi"
+)
+
+type StorageDevice string
+
+// All available storage devices.
+const (
+	IDEStorageDevice         StorageDevice = "ide"
+	SATAStorageDevice        StorageDevice = "sata"
+	VirtIOSCSItorageDevice   StorageDevice = "virtio_scsi"
+	VirtIOBlockStorageDevice StorageDevice = "virtio_block"
+)
+
+type USBController string
+
+// All available USB controllers.
+const (
+	NecXHCIUSBController   USBController = "nec_xhci"
+	Piix3UHCIUSBController USBController = "piix3_uhci"
+)
+
+type NetworkModel string
+
+// All available network models.
+const (
+	E1000NetworkModel   NetworkModel = "e1000"
+	E1000ENetworkModel  NetworkModel = "e1000e"
+	VirtIONetworkModel  NetworkModel = "virtio"
+	VmxNet3NetworkModel NetworkModel = "vmxnet3"
+)
+
+type ServerHardwareProfileConfig struct {
+	Machinetype          Machinetype   `json:"machinetype"`
+	StorageDevice        StorageDevice `json:"storage_device"`
+	USBController        USBController `json:"usb_controller"`
+	NestedVirtualization bool          `json:"nested_virtualization"`
+	HyperVExtensions     bool          `json:"hyperv_extensions"`
+	NetworkModel         NetworkModel  `json:"network_model"`
+	SerialInterface      bool          `json:"serial_interface"`
+	ServerRenice         bool          `json:"server_renice"`
+}
 
 // GetServer gets a specific server based on given list.
 //

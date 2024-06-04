@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net"
 	"net/http"
 	"runtime"
@@ -183,7 +183,7 @@ func (r *gsRequest) prepareHTTPRequest(ctx context.Context, cfg *Config) (*http.
 // retryHTTPRequest prepares and sends a HTTP request.
 // If 429 error code is returned from the server, retry after the rate-limit is reset.
 // If 503 error code is returned and Retry-After response header is defined (x seconds),
-//retry after x seconds.
+// retry after x seconds.
 // If 503 error code is returned and Retry-After response header is NOT defined,
 // the next retry depends on the config of gsclient-go (delayIntervalMilliSecs and maxNumberOfRetries).
 // Returns UUID (string), response body ([]byte), error
@@ -197,6 +197,9 @@ func (r *gsRequest) retryHTTPRequest(ctx context.Context, cfg *Config) (string, 
 	var responseBodyBytes []byte
 	err := retryNTimes(func() (bool, error) {
 		httpReq, err := r.prepareHTTPRequest(ctx, cfg)
+		if err != nil {
+			return false, err
+		}
 		logger.Debugf("Request body: %v", httpReq.Body)
 		logger.Debugf("Request headers: %v", maskHeaderCred(httpReq.Header))
 		resp, err := cfg.httpClient.Do(httpReq)
@@ -221,7 +224,7 @@ func (r *gsRequest) retryHTTPRequest(ctx context.Context, cfg *Config) (string, 
 
 		statusCode := resp.StatusCode
 		requestUUID = resp.Header.Get(requestUUIDHeader)
-		responseBodyBytes, err = ioutil.ReadAll(resp.Body)
+		responseBodyBytes, err = io.ReadAll(resp.Body)
 		if err != nil {
 			logger.Errorf("Error while reading the response's body: %v", err)
 			return false, err
@@ -235,7 +238,7 @@ func (r *gsRequest) retryHTTPRequest(ctx context.Context, cfg *Config) (string, 
 			json.Unmarshal(responseBodyBytes, &errorMessage)
 
 			switch statusCode {
-			case http.StatusServiceUnavailable, http.StatusFailedDependency, http.StatusInternalServerError:
+			case http.StatusServiceUnavailable, http.StatusFailedDependency, http.StatusInternalServerError, http.StatusConflict:
 				// Get the delay (in second) for the next retry
 				delayDurationStr := resp.Header.Get(retryAfterHeader)
 				delayDuration, err := strconv.Atoi(delayDurationStr)
