@@ -43,6 +43,8 @@ each category, the available configuration keys are alphabetized.
 
 - `server_name` (string) - Name of the server used for producing the template.
 
+- `user_data` (string) - UserData is a string that will be passed to the server instance as user data.
+
 - `secondary_storage` (bool) - SecondaryStorage is set to true when the server needs a secondary storage
   during producing template process.
   **NOTE**: If `secondary_storage=true`, the template will be built from the second storage.
