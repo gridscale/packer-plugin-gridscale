@@ -77,6 +77,7 @@ type FlatConfig struct {
 	ServerCores               *int              `mapstructure:"server_cores" required:"true" cty:"server_cores" hcl:"server_cores"`
 	ServerMemory              *int              `mapstructure:"server_memory" required:"true" cty:"server_memory" hcl:"server_memory"`
 	StorageCapacity           *int              `mapstructure:"storage_capacity" required:"true" cty:"storage_capacity" hcl:"storage_capacity"`
+	UserData                  *string           `mapstructure:"user_data" required:"false" cty:"user_data" hcl:"user_data"`
 	SecondaryStorage          *bool             `mapstructure:"secondary_storage" required:"false" cty:"secondary_storage" hcl:"secondary_storage"`
 	BaseTemplateUUID          *string           `mapstructure:"base_template_uuid" required:"false" cty:"base_template_uuid" hcl:"base_template_uuid"`
 	IsoImageUUID              *string           `mapstructure:"isoimage_uuid" required:"false" cty:"isoimage_uuid" hcl:"isoimage_uuid"`
@@ -166,6 +167,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"server_cores":                 &hcldec.AttrSpec{Name: "server_cores", Type: cty.Number, Required: false},
 		"server_memory":                &hcldec.AttrSpec{Name: "server_memory", Type: cty.Number, Required: false},
 		"storage_capacity":             &hcldec.AttrSpec{Name: "storage_capacity", Type: cty.Number, Required: false},
+		"user_data":                    &hcldec.AttrSpec{Name: "user_data", Type: cty.String, Required: false},
 		"secondary_storage":            &hcldec.AttrSpec{Name: "secondary_storage", Type: cty.Bool, Required: false},
 		"base_template_uuid":           &hcldec.AttrSpec{Name: "base_template_uuid", Type: cty.String, Required: false},
 		"isoimage_uuid":                &hcldec.AttrSpec{Name: "isoimage_uuid", Type: cty.String, Required: false},

@@ -27,13 +27,18 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		c.ServerName = fmt.Sprintf("packer-%s", randString(10))
 	}
 	log.Println(c.ServerName)
+	serverCreateReq := gsclient.ServerCreateRequest{
+		Name:   c.ServerName,
+		Cores:  c.ServerCores,
+		Memory: c.ServerMemory,
+	}
+	if c.UserData != "" {
+		serverCreateReq.UserData = &c.UserData
+	}
 	server, err := client.CreateServer(
 		context.Background(),
-		gsclient.ServerCreateRequest{
-			Name:   c.ServerName,
-			Cores:  c.ServerCores,
-			Memory: c.ServerMemory,
-		})
+		serverCreateReq,
+	)
 	if err != nil {
 		err := fmt.Errorf("Error creating server: %s", err)
 		state.Put("error", err)
