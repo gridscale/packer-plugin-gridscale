@@ -6,6 +6,7 @@ The `gridscale` Packer builder is used to create new (os) templates for use with
 The builder does _not_ manage templates. Once it creates a template, it is up to you
 to use it or delete it.
 
+
 ## Configuration Reference
 
 There are many configuration options available for the builder. They are
