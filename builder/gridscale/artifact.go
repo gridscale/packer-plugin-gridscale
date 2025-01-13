@@ -3,8 +3,10 @@ package gridscale
 import (
 	"context"
 	"fmt"
-	"github.com/gridscale/gsclient-go/v3"
 	"log"
+
+	"github.com/gridscale/gsclient-go/v3"
+	registryimage "github.com/hashicorp/packer-plugin-sdk/packer/registry/image"
 )
 
 type Artifact struct {
@@ -14,8 +16,18 @@ type Artifact struct {
 	// The UUID of the template
 	TemplateUUID string
 
+	// Location name.
+	LocationName string
+
+	// Location UUID.
+	LocationUUID string
+
 	// The client for making API calls
 	Client gsclient.TemplateOperator
+
+	// StateData should store data such as GeneratedData
+	// to be shared with post-processors
+	StateData map[string]interface{}
 }
 
 func (*Artifact) BuilderId() string {
@@ -36,7 +48,20 @@ func (a *Artifact) String() string {
 }
 
 func (a *Artifact) State(name string) interface{} {
-	return nil
+	if name == registryimage.ArtifactStateURI {
+		img, err := registryimage.FromArtifact(a,
+			registryimage.WithID(a.TemplateName),
+			registryimage.WithProvider("gridscale"),
+			registryimage.WithSourceID(a.TemplateUUID),
+			registryimage.WithRegion(a.LocationName),
+		)
+		if err != nil {
+			log.Printf("[DEBUG] error encountered when creating a registry image %v", err)
+			return nil
+		}
+		return img
+	}
+	return a.StateData[name]
 }
 
 func (a *Artifact) Destroy() error {
