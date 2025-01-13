@@ -42,6 +42,8 @@ type Config struct {
 	ServerMemory int `mapstructure:"server_memory" required:"true"`
 	// Storage capacity (in GB)
 	StorageCapacity int `mapstructure:"storage_capacity" required:"true"`
+	// UserData is a string that will be passed to the server instance as user data.
+	UserData string `mapstructure:"user_data" required:"false"`
 	// SecondaryStorage is set to true when the server needs a secondary storage
 	// during producing template process.
 	// **NOTE**: If `secondary_storage=true`, the template will be built from the second storage.
