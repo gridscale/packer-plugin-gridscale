@@ -12,7 +12,12 @@ import (
 type TemplateOperatorMock struct{}
 
 func (t TemplateOperatorMock) GetTemplate(ctx context.Context, id string) (gsclient.Template, error) {
-	panic("implement me")
+	return gsclient.Template{
+		Properties: gsclient.TemplateProperties{
+			Name:       "test",
+			ObjectUUID: "test",
+		},
+	}, nil
 }
 
 func (t TemplateOperatorMock) GetTemplateByName(ctx context.Context, name string) (gsclient.Template, error) {

@@ -89,7 +89,15 @@ func (u *uiMock) Ask(s string) (string, error) {
 	panic("implement me")
 }
 
+func (u *uiMock) Askf(string, ...any) (string, error) {
+	panic("implement me")
+}
+
 func (u *uiMock) Say(s string) {
+	u.sayMessage = s
+}
+
+func (u *uiMock) Sayf(s string, s2 ...any) {
 	u.sayMessage = s
 }
 
@@ -98,6 +106,10 @@ func (u *uiMock) Message(s string) {
 }
 
 func (u *uiMock) Error(s string) {
+	u.errorMessage = s
+}
+
+func (u *uiMock) Errorf(s string, s2 ...any) {
 	u.errorMessage = s
 }
 
