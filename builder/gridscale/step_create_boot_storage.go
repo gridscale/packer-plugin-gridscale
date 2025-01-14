@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+
 	"github.com/gridscale/gsclient-go/v3"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
@@ -38,18 +39,23 @@ func (s *stepCreateBootStorage) Run(ctx context.Context, state multistep.StateBa
 			state.Put("error", err)
 			return multistep.ActionHalt
 		}
-		if sshKeyUUID == "" {
-			ui.Error("No SSH key UUID detected.")
-			state.Put("error", "No SSH key UUID detected.")
+		if sshKeyUUID == "" && c.Comm.SSHPassword == "" {
+			ui.Error("No SSH key UUID and no SSH password are provided.")
+			state.Put("error", "No SSH key UUID and no SSH password are provided.")
 			return multistep.ActionHalt
 		}
-		storageCreateReq.Template = &gsclient.StorageTemplate{
-			Password:     c.Comm.SSHPassword,
-			PasswordType: gsclient.PlainPasswordType,
+		storage_template := gsclient.StorageTemplate{
 			Hostname:     c.Hostname,
-			Sshkeys:      []string{sshKeyUUID},
 			TemplateUUID: c.BaseTemplateUUID,
 		}
+		if sshKeyUUID != "" {
+			storage_template.Sshkeys = []string{sshKeyUUID}
+		}
+		if c.Comm.SSHPassword != "" {
+			storage_template.Password = c.Comm.SSHPassword
+			storage_template.PasswordType = gsclient.PlainPasswordType
+		}
+		storageCreateReq.Template = &storage_template
 	}
 	storage, err := client.CreateStorage(context.Background(), storageCreateReq)
 
