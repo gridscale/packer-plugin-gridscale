@@ -176,7 +176,7 @@ github.com/googleapis/gax-go/v2/apierror
 github.com/googleapis/gax-go/v2/apierror/internal/proto
 github.com/googleapis/gax-go/v2/callctx
 github.com/googleapis/gax-go/v2/internal
-# github.com/gridscale/gsclient-go/v3 v3.14.2
+# github.com/gridscale/gsclient-go/v3 v3.16.0
 ## explicit; go 1.21
 github.com/gridscale/gsclient-go/v3
 # github.com/hashicorp/consul/api v1.25.1
