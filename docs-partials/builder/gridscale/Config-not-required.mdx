@@ -16,7 +16,7 @@
   during producing template process.
   **NOTE**: If `secondary_storage=true`, the template will be built from the second storage.
 
-- `base_template_uuid` (string) - A pre-built template UUID. This template is used to produce another template. E.g: Ubuntu template. If base template is private, `ssh_password` will be ignored.
+- `base_template_uuid` (string) - A pre-built template UUID. This template is used to produce another template. E.g: Ubuntu template.
   **NOTE**: One of these fields has to be set: `isoimage_uuid`, `isoimage_url`, `base_template_uuid`.
 
 - `isoimage_uuid` (string) - A pre-built ISO image is used by the given ISO image UUID. If IsoImageUUID is set, IsoImageURL is ignored.
