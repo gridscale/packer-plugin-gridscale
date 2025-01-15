@@ -110,9 +110,10 @@ func Test_stepCreateBootStorage_Cleanup(t *testing.T) {
 
 func Test_stepCreateBootStorage_Run(t *testing.T) {
 	type fields struct {
-		client gsclient.StorageOperator
-		config *Config
-		ui     packer.Ui
+		client         gsclient.StorageOperator
+		templateClient gsclient.TemplateOperator
+		config         *Config
+		ui             packer.Ui
 	}
 	type args struct {
 		ctx   context.Context
@@ -128,7 +129,8 @@ func Test_stepCreateBootStorage_Run(t *testing.T) {
 		{
 			name: "success",
 			fields: fields{
-				client: StorageOperatorMock{},
+				client:         StorageOperatorMock{},
+				templateClient: TemplateOperatorMock{},
 				config: produceTestConfig(map[string]interface{}{
 					"server_name": "success",
 				}),
@@ -145,7 +147,8 @@ func Test_stepCreateBootStorage_Run(t *testing.T) {
 		{
 			name: "API call fail",
 			fields: fields{
-				client: StorageOperatorMock{},
+				client:         StorageOperatorMock{},
+				templateClient: TemplateOperatorMock{},
 				config: produceTestConfig(map[string]interface{}{
 					"server_name": "fail",
 				}),
@@ -162,7 +165,8 @@ func Test_stepCreateBootStorage_Run(t *testing.T) {
 		{
 			name: "No SSH key UUID detected",
 			fields: fields{
-				client: StorageOperatorMock{},
+				client:         StorageOperatorMock{},
+				templateClient: TemplateOperatorMock{},
 				config: produceTestConfig(map[string]interface{}{
 					"server_name": "success",
 				}),
@@ -179,7 +183,8 @@ func Test_stepCreateBootStorage_Run(t *testing.T) {
 		{
 			name: "cannot convert ssh_key_uuid to string",
 			fields: fields{
-				client: StorageOperatorMock{},
+				client:         StorageOperatorMock{},
+				templateClient: TemplateOperatorMock{},
 				config: produceTestConfig(map[string]interface{}{
 					"server_name": "success",
 				}),
@@ -195,9 +200,10 @@ func Test_stepCreateBootStorage_Run(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &stepCreateBootStorage{
-				client: tt.fields.client,
-				config: tt.fields.config,
-				ui:     tt.fields.ui,
+				client:         tt.fields.client,
+				templateClient: tt.fields.templateClient,
+				config:         tt.fields.config,
+				ui:             tt.fields.ui,
 			}
 			if got := s.Run(tt.args.ctx, tt.args.state); got != tt.want {
 				t.Errorf("stepCreateBootStorage_Run() = %v, want %v", got, tt.want)
