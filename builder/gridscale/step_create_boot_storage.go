@@ -11,9 +11,10 @@ import (
 )
 
 type stepCreateBootStorage struct {
-	client gsclient.StorageOperator
-	config *Config
-	ui     packer.Ui
+	client         gsclient.StorageOperator
+	templateClient gsclient.TemplateOperator
+	config         *Config
+	ui             packer.Ui
 }
 
 func (s *stepCreateBootStorage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
@@ -39,21 +40,31 @@ func (s *stepCreateBootStorage) Run(ctx context.Context, state multistep.StateBa
 			state.Put("error", err)
 			return multistep.ActionHalt
 		}
-		if sshKeyUUID == "" && c.Comm.SSHPassword == "" {
-			ui.Error("No SSH key UUID and no SSH password are provided.")
-			state.Put("error", "No SSH key UUID and no SSH password are provided.")
-			return multistep.ActionHalt
-		}
 		storage_template := gsclient.StorageTemplate{
-			Hostname:     c.Hostname,
 			TemplateUUID: c.BaseTemplateUUID,
 		}
-		if sshKeyUUID != "" {
-			storage_template.Sshkeys = []string{sshKeyUUID}
+		template, err := s.templateClient.GetTemplate(context.Background(), c.BaseTemplateUUID)
+		if err != nil {
+			ui.Error(fmt.Sprintf("Error getting template: %s", err))
+			state.Put("error", err)
+			return multistep.ActionHalt
 		}
-		if c.Comm.SSHPassword != "" {
-			storage_template.Password = c.Comm.SSHPassword
-			storage_template.PasswordType = gsclient.PlainPasswordType
+		// Check if template is public, if so, either ssh key or password and hostname is required.
+		// If template is private, ssh key or password will be ignored.
+		if !template.Properties.Private {
+			storage_template.Hostname = c.Hostname
+			if sshKeyUUID == "" && c.Comm.SSHPassword == "" {
+				ui.Error("No SSH key UUID and no SSH password are provided.")
+				state.Put("error", "No SSH key UUID and no SSH password are provided.")
+				return multistep.ActionHalt
+			}
+			if sshKeyUUID != "" {
+				storage_template.Sshkeys = []string{sshKeyUUID}
+			}
+			if c.Comm.SSHPassword != "" {
+				storage_template.Password = c.Comm.SSHPassword
+				storage_template.PasswordType = gsclient.PlainPasswordType
+			}
 		}
 		storageCreateReq.Template = &storage_template
 	}

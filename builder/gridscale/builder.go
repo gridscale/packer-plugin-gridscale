@@ -85,9 +85,10 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			ui:           ui,
 		},
 		&stepCreateBootStorage{
-			client: client,
-			config: &b.config,
-			ui:     ui,
+			client:         client,
+			templateClient: client,
+			config:         &b.config,
+			ui:             ui,
 		},
 		&stepLinkServerBootStorage{
 			client: client,
