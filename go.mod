@@ -5,7 +5,7 @@ go 1.21.0
 toolchain go1.21.5
 
 require (
-	github.com/gridscale/gsclient-go/v3 v3.14.2
+	github.com/gridscale/gsclient-go/v3 v3.16.0
 	github.com/hashicorp/hcl/v2 v2.19.1
 	github.com/hashicorp/packer-plugin-sdk v0.5.4
 	github.com/mitchellh/go-vnc v0.0.0-20150629162542-723ed9867aed
